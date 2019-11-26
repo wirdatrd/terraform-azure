@@ -14,7 +14,7 @@ terraform {
 # Configure the Azure Provider
 provider "azurerm" {
   # Pin version as per best practice
-  version = "=1.22.0"
+  # version = "~> 1.36.0"
 }
 
 # Create a resource group if it doesn’t exist

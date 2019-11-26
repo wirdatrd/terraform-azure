@@ -32,14 +32,17 @@
 [CmdletBinding()]
 param (
     # This is used to assign yourself access to KeyVault
-    $adminUserDisplayName = '<Admin Username>',
-    $servicePrincipleName = 'terraform',
-    $resourceGroupName = 'terraform-mgmt-rg',
-    $location = 'eastus',
+    $adminUserDisplayName = 'Hugh Taylor',
+    $servicePrincipleName = 'azureterraform',
+    $resourceGroupName = 'devops-resources',
+    $location = 'West US 2',
     $storageAccountSku = 'Standard_LRS',
     $storageContainerName = 'terraform-state',
-    # Prepend random prefix with A character, as some resources cannot start with a number
-    $randomPrefix = ("a" + -join ((48..57) + (97..122) | Get-Random -Count 8 | ForEach-Object { [char]$_ })),
+    # Prepend random prefix with A character, as some resources cannot 
+    # start with a number
+    $randomPrefix = ("a" + -join ((48..57) + (97..122) | 
+        Get-Random -Count 8 | 
+        ForEach-Object { [char]$_ })),
     $vaultName = "$randomPrefix-terraform-kv",
     $storageAccountName = "$($randomPrefix)terraform"
 )
@@ -102,7 +105,8 @@ Write-HostPadded -Message "Creating a Terraform Service Principle: [$servicePrin
 try {
     $terraformSP = New-AzADServicePrincipal -DisplayName $servicePrincipleName -Role 'Contributor' -ErrorAction 'Stop'
     $servicePrinciplePassword = [pscredential]::new($servicePrincipleName, $terraformSP.Secret).GetNetworkCredential().Password
-} catch {
+}
+catch {
     Write-Host "ERROR!" -ForegroundColor 'Red'
     throw $_
 }
@@ -115,7 +119,8 @@ $taskMessage = "Finding Subscription and Tenant details"
 Write-HostPadded -Message "`n$taskMessage..." -NoNewline
 try {
     $subscription = Get-AzSubscription -ErrorAction 'Stop'
-} catch {
+}
+catch {
     Write-Host "ERROR!" -ForegroundColor 'Red'
     throw $_
 }
@@ -135,7 +140,8 @@ try {
         Verbose     = $VerbosePreference
     }
     New-AzResourceGroup @azResourceGroupParams | Out-String | Write-Verbose
-} catch {
+}
+catch {
     Write-Host "ERROR!" -ForegroundColor 'Red'
     throw $_
 }
@@ -157,7 +163,8 @@ try {
         Verbose           = $VerbosePreference
     }
     New-AzStorageAccount @azStorageAccountParams | Out-String | Write-Verbose
-} catch {
+}
+catch {
     Write-Host "ERROR!" -ForegroundColor 'Red'
     throw $_
 }
@@ -176,7 +183,8 @@ try {
         Verbose           = $VerbosePreference
     }
     Set-AzCurrentStorageAccount @azCurrentStorageAccountParams | Out-String | Write-Verbose
-} catch {
+}
+catch {
     Write-Host "ERROR!" -ForegroundColor 'Red'
     throw $_
 }
@@ -195,7 +203,8 @@ try {
         Verbose     = $VerbosePreference
     }
     New-AzStorageContainer @azStorageContainerParams | Out-String | Write-Verbose
-} catch {
+}
+catch {
     Write-Host "ERROR!" -ForegroundColor 'Red'
     throw $_
 }
@@ -215,7 +224,8 @@ try {
         Verbose           = $VerbosePreference
     }
     New-AzKeyVault @azKeyVaultParams | Out-String | Write-Verbose
-} catch {
+}
+catch {
     Write-Host "ERROR!" -ForegroundColor 'Red'
     throw $_
 }
@@ -239,7 +249,8 @@ try {
         Verbose                   = $VerbosePreference
     }
     Set-AzKeyVaultAccessPolicy @azKeyVaultAccessPolicyParams | Out-String | Write-Verbose
-} catch {
+}
+catch {
     Write-Host "ERROR!" -ForegroundColor 'Red'
     throw $_
 }
@@ -259,7 +270,8 @@ try {
         Verbose                   = $VerbosePreference
     }
     Set-AzKeyVaultAccessPolicy @azKeyVaultAccessPolicyParams | Out-String | Write-Verbose
-} catch {
+}
+catch {
     Write-Host "ERROR!" -ForegroundColor 'Red'
     throw $_
 }
@@ -298,7 +310,8 @@ try {
         }
         Set-AzKeyVaultSecret @AzKeyVaultSecretParams | Out-String | Write-Verbose
     }
-} catch {
+}
+catch {
     Write-Host "ERROR!" -ForegroundColor 'Red'
     throw $_
 }

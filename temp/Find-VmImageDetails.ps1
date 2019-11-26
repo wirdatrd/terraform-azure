@@ -1,11 +1,14 @@
 # Find VM Image details
-$vmImages = Get-AzVmImage -PublisherName canonical -Location eastus
+$vmImages = Get-AzVmImage -PublisherName canonical -Location 'West US 2'
 
-$locName="eastus"
-Get-AzVMImagePublisher -Location $locName | Select-Object PublisherName
+$locName="west us 2"
+Get-AzVMImagePublisher -Location $locName | 
+    Select-Object PublisherName
 
 $pubName="canonical"
-Get-AzVMImageOffer -Location $locName -PublisherName $pubName | Select-Object Offer
+Get-AzVMImageOffer -Location $locName -PublisherName $pubName | 
+    Select-Object Offer
 
 $offerName="UbuntuServer"
-Get-AzVMImageSku -Location $locName -PublisherName $pubName -Offer $offerName | Select-Object Skus
+Get-AzVMImageSku -Location $locName -PublisherName $pubName -Offer $offerName | 
+    Select-Object Skus
