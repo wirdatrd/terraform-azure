@@ -18,17 +18,15 @@
     - Azure PowerShell module is installed: https://docs.microsoft.com/en-us/powershell/azure/install-az-ps
     - You are already logged into Azure before running this script (eg. Connect-AzAccount)
 
-    Author:  Adam Rush
-    Blog:    https://adamrushuk.github.io
-    GitHub:  https://github.com/adamrushuk
-    Twitter: @adamrushuk
+    Author:  Hugh Taylor
+    GitHub:  https://github.com/wirdatrd
 #>
 
 
 [CmdletBinding()]
 param (
     # Find the Azure Key Vault that includes this string in it's name
-    $keyVaultSearchString = 'terraform-kv'
+    $keyVaultSearchString = 'aztfchnz-key-vault'
 )
 
 
@@ -37,20 +35,16 @@ function Write-HostPadded {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [String]
-        $Message,
+        [String]$Message,
 
         [Parameter(Mandatory = $false)]
-        [String]
-        $ForegroundColor,
+        [String]$ForegroundColor,
 
         [Parameter(Mandatory = $false)]
-        [Int]
-        $PadLength = 60,
+        [Int]$PadLength = 60,
 
         [Parameter(Mandatory = $false)]
-        [Switch]
-        $NoNewline
+        [Switch]$NoNewline
     )
 
     $writeHostParams = @{
@@ -152,5 +146,5 @@ foreach ($terraformEnvVar in $terraformEnvVars.GetEnumerator()) {
 }
 Write-Host "FINISHED: $sessionMessage" -ForegroundColor 'Green'
 
-Write-Host "`nFINISHED: $loadMessage" -ForegroundColor 'Green'
+Write-Host "`nFINISHED: $loadMessage`n" -ForegroundColor 'Green'
 #endregion Load Terraform environment variables

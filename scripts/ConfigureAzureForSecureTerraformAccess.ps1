@@ -19,54 +19,48 @@
         - ARM_ACCESS_KEY
 .NOTES
     Assumptions:
-    - Azure PowerShell module is installed: https://docs.microsoft.com/en-us/powershell/azure/install-az-ps
-    - You are already logged into Azure before running this script (eg. Connect-AzAccount)
+    - Azure PowerShell module is installed: 
+      https://docs.microsoft.com/en-us/powershell/azure/install-az-ps
+    - You are already logged into Azure before running this script 
+      (eg. Connect-AzAccount)
 
-    Author:  Adam Rush
-    Blog:    https://adamrushuk.github.io
-    GitHub:  https://github.com/adamrushuk
-    Twitter: @adamrushuk
+    Author:  Hugh Taylor
+    GitHub:  https://github.com/wirdatrd
 #>
-
 
 [CmdletBinding()]
 param (
     # This is used to assign yourself access to KeyVault
-    $adminUserDisplayName = 'Hugh Taylor',
-    $servicePrincipleName = 'azureterraform',
-    $resourceGroupName = 'devops-resources',
+    $adminUserDisplayName = 'Hugh Taylor', 
+    $servicePrincipleName = 'az-tf-svc',
     $location = 'West US 2',
     $storageAccountSku = 'Standard_LRS',
-    $storageContainerName = 'terraform-state',
     # Prepend random prefix with A character, as some resources cannot 
     # start with a number
-    $randomPrefix = ("a" + -join ((48..57) + (97..122) | 
-        Get-Random -Count 8 | 
-        ForEach-Object { [char]$_ })),
-    $vaultName = "$randomPrefix-terraform-kv",
-    $storageAccountName = "$($randomPrefix)terraform"
+    $randomPrefix = ("aztf" + -join ((48..57) + (97..122) | 
+                Get-Random -Count 4 | 
+                ForEach-Object { [char]$_ })),
+    $resourceGroupName = "$randomPrefix-devops-resources",
+    $vaultName = "$randomPrefix-key-vault",
+    $storageAccountName = "$($randomPrefix)storage",
+    $storageContainerName = 'terraform-state'
 )
 
-
-#region Helper function for padded messages
+#  region Helper function for padded messages
 function Write-HostPadded {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [String]
-        $Message,
+        [String]$Message,
 
         [Parameter(Mandatory = $false)]
-        [String]
-        $ForegroundColor,
+        [String]$ForegroundColor,
 
         [Parameter(Mandatory = $false)]
-        [Int]
-        $PadLength = 80,
+        [Int]$PadLength = 80,
 
         [Parameter(Mandatory = $false)]
-        [Switch]
-        $NoNewline
+        [Switch]$NoNewline
     )
 
     $writeHostParams = @{
@@ -260,16 +254,16 @@ $taskMessage = "Setting KeyVault Access Policy for Terraform SP: [$servicePrinci
 Write-HostPadded -Message "`n$taskMessage..." -NoNewline
 try {
     $azKeyVaultAccessPolicyParams = @{
-        VaultName                 = $vaultName
-        ResourceGroupName         = $resourceGroupName
-        ObjectId                  = $terraformSP.Id
-        PermissionsToKeys         = @('Get', 'List')
-        PermissionsToSecrets      = @('Get', 'List', 'Set')
-        PermissionsToCertificates = @('Get', 'List')
-        ErrorAction               = 'Stop'
-        Verbose                   = $VerbosePreference
+        VaultName                    = $vaultName
+        ResourceGroupName            = $resourceGroupName
+        ObjectId                     = $terraformSP.Id
+        PermissionsToKeys            = @('Get', 'List')
+        PermissionsToSecrets         = @('Get', 'List', 'Set')
+        PermissionsToCertificates    = @('Get', 'List')
+        ErrorAction                  = 'Stop'
+        Verbose                      = $VerbosePreference
     }
-    Set-AzKeyVaultAccessPolicy @azKeyVaultAccessPolicyParams | Out-String | Write-Verbose
+    Set-AzKeyVaultAccessPolicy @azKeyVaultAccessPolicyParams 
 }
 catch {
     Write-Host "ERROR!" -ForegroundColor 'Red'
@@ -292,7 +286,7 @@ $terraformLoginVars = @{
     'ARM-ACCESS-KEY'      = $storageAccessKey
 }
 Write-Host "`nTerraform login details:"
-$terraformLoginVars | Out-String | Write-Verbose
+$terraformLoginVars #| Out-String | Write-Verbose
 #endregion Terraform login variables
 
 
