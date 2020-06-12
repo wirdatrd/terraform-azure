@@ -1,14 +1,21 @@
+
+$locName="westus2"
+
+$publisher = Get-AzVMImagePublisher -Location $locName | 
+    Select-Object PublisherName |
+    Where-Object {$_.PublisherName -eq "MicrosoftWindowsServer"}
+
+#  $pubName="Microsoft.Server"
+$offer = Get-AzVMImageOffer -Location $locName -PublisherName $publisher.PublisherName | 
+    Select-Object Offer |
+    Where-Object {$_.Offer -eq "WindowsServer"}
+
+#  $offerName="UbuntuServer"
+$sku = Get-AzVMImageSku -Location $locName -PublisherName $publisher.PublisherName -Offer $offer.Offer | 
+    Select-Object Skus |
+    Where-Object {$_.Skus -eq "2019-Datacenter"}
+
+$sku.Skus
+
 # Find VM Image details
-$vmImages = Get-AzVmImage -PublisherName canonical -Location 'West US 2'
-
-$locName="west us 2"
-Get-AzVMImagePublisher -Location $locName | 
-    Select-Object PublisherName
-
-$pubName="canonical"
-Get-AzVMImageOffer -Location $locName -PublisherName $pubName | 
-    Select-Object Offer
-
-$offerName="UbuntuServer"
-Get-AzVMImageSku -Location $locName -PublisherName $pubName -Offer $offerName | 
-    Select-Object Skus
+$vmImages = Get-AzVmImage -Location westus2 -Offer $offer.Offer -PublisherName $publisher.PublisherName -Skus $sku.Skus

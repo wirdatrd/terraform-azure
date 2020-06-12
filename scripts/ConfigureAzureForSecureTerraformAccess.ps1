@@ -32,14 +32,17 @@
 param (
     # This is used to assign yourself access to KeyVault
     $adminUserDisplayName = 'Hugh Taylor', 
-    $servicePrincipleName = 'az-tf-svc',
+    $servicePrincipleName = 'terraform',
     $location = 'West US 2',
     $storageAccountSku = 'Standard_LRS',
-    # Prepend random prefix with A character, as some resources cannot 
-    # start with a number
-    $randomPrefix = ("aztf" + -join ((48..57) + (97..122) | 
-                Get-Random -Count 4 | 
-                ForEach-Object { [char]$_ })),
+    # Next, get a random prefix with a lower case character, 
+    # and add 4 additional Num/LowerCase, as some resources 
+    # cannot start with a number or have dashes or upper case.
+    $randomPrefix = ("tf" + -join ( (48..57) + (97..122) | # Num:0-9 - Char:a-z
+                                    Get-Random -Count 4 | # get 4 of those
+                                    ForEach-Object { [char]$_ } # convert to char
+                                  )
+                    ),
     $resourceGroupName = "$randomPrefix-devops-resources",
     $vaultName = "$randomPrefix-key-vault",
     $storageAccountName = "$($randomPrefix)storage",

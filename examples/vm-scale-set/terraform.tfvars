@@ -1,6 +1,6 @@
 # Assign variables
 environment         = "staging"
-location            = "eastus"
+location            = "westus2"
 resource_group_name = "asrsstest123rg"
 
 admin_username = "azureuser"
@@ -13,5 +13,5 @@ vm_image_offer     = "CentOS"
 vm_image_sku       = "7.6"
 vm_image_version   = "latest"
 
-scaleset_vm_size  = "Standard_B1s"
+scaleset_vm_size  = "Standard_B2ms"
 scaleset_capacity = 2
