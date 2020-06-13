@@ -6,7 +6,7 @@ resource_group_name = "asrsstest123rg"
 admin_username = "azureuser"
 admin_password = "Pa55word!Pa55word!"
 
-address_space = ["10.0.0.0/16"]
+address_space = ["10.240.0.0/16"]
 
 vm_image_publisher = "OpenLogic"
 vm_image_offer     = "CentOS"

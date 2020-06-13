@@ -4,10 +4,8 @@
 # TODO: tshoot current build issues
 
 # Configure Providers
-provider "azurerm" {
-  # Pin version as per best practice
-  version = "=1.33.1"
-}
+provider "azurerm" {}
+
 terraform {
   required_version = ">= 0.12"
 }

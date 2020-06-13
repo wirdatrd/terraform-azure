@@ -7,7 +7,13 @@ variable "admin_username" {}
 variable "admin_password" {}
 
 variable "address_space" {
-  type = "list"
+  type = list[string]
+}
+variable "subnets" {
+  type = list[string]
+}
+variable "subnet_names" {  
+  type = list[string]
 }
 
 variable "vm_image_publisher" {}

@@ -1,5 +1,5 @@
 
-$locName="westus2"
+$locName = "centralus"
 
 $publisher = Get-AzVMImagePublisher -Location $locName | 
     Select-Object PublisherName |

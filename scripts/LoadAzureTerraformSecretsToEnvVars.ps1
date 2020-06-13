@@ -15,7 +15,7 @@
         - ARM_ACCESS_KEY
 .NOTES
     Assumptions:
-    - Azure PowerShell module is installed: https://docs.microsoft.com/en-us/powershell/azure/install-az-ps
+    - Az PowerShell module is installed: https://docs.microsoft.com/en-us/powershell/azure/install-az-ps
     - You are already logged into Azure before running this script (eg. Connect-AzAccount)
 
     Author:  Hugh Taylor

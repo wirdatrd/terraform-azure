@@ -1,13 +1,31 @@
+/*##################################
+#######     Variables.tf     #######
+*/
+
+variable "project_name" {
+  description = "The name of the overall project"
+  default = ""
+}
+
+variable "applicaiton_name" {
+  description = "The name of the application within the project"
+  default = ""
+}
+
+variable "prefix" {
+  description = "Prefix to attach to resources within the project"
+  default = "vmss"
+}
+
 variable "location" {
-  description = "The location where resources are created"
-  default     = "UK South"
+  description = "The Azure region where resources are located"
+  default     = "Central US"
 }
 
 variable "resource_group_name" {
   description = "The name of the resource group in which the resources are created"
-  default     = "vmss-packer-rg"
+  default     = "${var.project}-${var.prefix}-packer-rg"
 }
-
 
 variable "domain_name_label" {
   description = "Domain name label"
